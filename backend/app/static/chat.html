@@ -1,0 +1,57 @@
+<!-- backend/app/static/chat.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Aurora AI Chat — Chat</title>
+  <link rel="stylesheet" href="/static/css/styles.css" />
+</head>
+<body class="chat-page dark">
+  <div class="app-shell">
+    <aside class="sidebar glass">
+      <div class="brand">
+        <div class="logo">🌌</div>
+        <div>
+          <h2>Aurora AI</h2>
+          <p class="small">Your friendly assistant</p>
+        </div>
+      </div>
+      <div class="controls">
+        <button id="clearBtn" class="btn btn-ghost">Clear Chat</button>
+        <button id="toggleTheme" class="btn btn-ghost">Toggle Theme</button>
+      </div>
+      <div class="welcome glass">
+        <p><strong>Tip:</strong> Press Enter to send. Use the Clear button to reset chat.</p>
+      </div>
+    </aside>
+
+    <main class="chat-area">
+      <header class="chat-header glass">
+        <div class="header-left">
+          <h3>Chat</h3>
+          <p class="small">Ask anything — AI is ready.</p>
+        </div>
+        <div class="header-right">
+          <div class="ai-avatar">🤖</div>
+        </div>
+      </header>
+
+      <section id="messages" class="messages" aria-live="polite">
+        <!-- Messages will be appended here -->
+      </section>
+
+      <footer class="composer glass">
+        <div class="composer-left">
+          <textarea id="messageInput" placeholder="Type your message..." rows="1"></textarea>
+        </div>
+        <div class="composer-right">
+          <button id="sendBtn" class="btn btn-primary">Send</button>
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
