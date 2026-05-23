@@ -6,6 +6,11 @@ const inputEl = document.getElementById('messageInput');
 const sendBtn = document.getElementById('sendBtn');
 const clearBtn = document.getElementById('clearBtn');
 const toggleThemeBtn = document.getElementById('toggleTheme');
+const newChatBtn = document.getElementById('newChatBtn');
+const historyList = document.getElementById('history-list');
+
+let chatCount = 1;
+
 
 // Keep chat history in memory (client-side only)
 let chatHistory = [];
@@ -18,10 +23,10 @@ function createMessageElement({role, content, isTyping=false}) {
   wrapper.classList.add('msg', role === 'user' ? 'user' : 'bot');
 
   // Meta line
-  const meta = document.createElement('div');
-  meta.className = 'meta';
-  meta.textContent = role === 'user' ? 'You' : 'Aurora';
-  wrapper.appendChild(meta);
+  // const meta = document.createElement('div');
+  // meta.className = 'meta';
+  // meta.textContent = role === 'user' ? 'You' : 'Aurora';
+  // wrapper.appendChild(meta);
 
   // Content
   const contentEl = document.createElement('div');
@@ -61,6 +66,7 @@ window.addEventListener('load', () => {
 async function sendMessage() {
   const text = inputEl.value.trim();
   if (!text) return;
+  document.querySelector('.welcome').style.display = 'none';
 
   // Append user message
   appendMessage('user', text);
@@ -124,15 +130,81 @@ inputEl.addEventListener('input', () => {
 sendBtn.addEventListener('click', sendMessage);
 
 // Clear chat
-clearBtn.addEventListener('click', () => {
-  messagesEl.innerHTML = '';
-  chatHistory = [];
-  appendMessage('bot', WELCOME_TEXT);
-  chatHistory.push({role: 'assistant', content: WELCOME_TEXT});
-});
+if (clearBtn) {
+  clearBtn.addEventListener('click', () => {
+    messagesEl.innerHTML = '';
+    chatHistory = [];
+
+    appendMessage('bot', WELCOME_TEXT);
+
+    chatHistory.push({
+      role: 'assistant',
+      content: WELCOME_TEXT
+    });
+  });
+}
 
 // Theme toggle (dark/light)
-toggleThemeBtn.addEventListener('click', () => {
-  document.body.classList.toggle('dark');
-  document.body.classList.toggle('light');
-});
+if (toggleThemeBtn) {
+
+  // Load saved theme
+  const savedTheme = localStorage.getItem('theme');
+
+  if (savedTheme === 'dark') {
+    document.body.classList.add('dark');
+  }
+
+  toggleThemeBtn.addEventListener('click', () => {
+
+    document.body.classList.toggle('dark');
+
+    // Save theme
+    if (document.body.classList.contains('dark')) {
+      localStorage.setItem('theme', 'dark');
+    } else {
+      localStorage.setItem('theme', 'light');
+    }
+  });
+}
+if (newChatBtn) {
+  newChatBtn.addEventListener('click', () => {
+
+    // Save current chat into history
+    if (messagesEl.innerHTML.trim() !== '') {
+
+      const historyItem = document.createElement('li');
+
+      historyItem.textContent = `Chat ${chatCount}`;
+
+      historyItem.classList.add('history-item');
+
+      historyItem.addEventListener('click', () => {
+        messagesEl.innerHTML = localStorage.getItem(`chat-${chatCount}`) || '';
+      });
+
+      historyList.prepend(historyItem);
+
+      localStorage.setItem(`chat-${chatCount}`, messagesEl.innerHTML);
+
+      chatCount++;
+    }
+
+    // Clear current chat
+    messagesEl.innerHTML = '';
+
+    // Reset history array
+    chatHistory = [];
+
+    // Show welcome section
+    const welcomeSection = document.querySelector('.welcome');
+
+    if (welcomeSection) {
+      welcomeSection.style.display = 'block';
+    }
+
+    // Clear input
+    inputEl.value = '';
+
+    inputEl.focus();
+  });
+}

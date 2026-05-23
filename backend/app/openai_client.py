@@ -6,36 +6,26 @@ load_dotenv()
 
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
+MODEL_NAME = "models/gemini-flash-latest"
+
 SYSTEM_PROMPT = (
-    "You are Aurora, a helpful AI assistant."
+    "You are Aurora, a friendly AI assistant."
 )
 
-model = genai.GenerativeModel("models/gemini-2.5-flash")
-
 async def get_chat_response(messages):
-
     try:
+        conversation = "\n".join(
+            [f"{m['role']}: {m['content']}" for m in messages]
+        )
 
-        user_message = messages[-1]["content"]
+        prompt = f"{SYSTEM_PROMPT}\n\n{conversation}"
 
-        prompt = f"""
-        {SYSTEM_PROMPT}
+        gemini_model = genai.GenerativeModel(MODEL_NAME)
 
-        User: {user_message}
+        response = gemini_model.generate_content(prompt)
 
-        Assistant:
-        """
-
-        response = model.generate_content(prompt)
-
-        return {
-            "text": response.text
-        }
+        return {"text": response.text}
 
     except Exception as e:
-
         print("Gemini Error:", e)
-
-        return {
-            "error": str(e)
-        }
+        return {"error": str(e)}

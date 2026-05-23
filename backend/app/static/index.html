@@ -1,77 +1,371 @@
 <!-- backend/app/static/index.html -->
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>AI Chatbot — Landing</title>
-  <link rel="stylesheet" href="/static/css/styles.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Aurora AI Workspace</title>
+
+  <link rel="stylesheet" href="/static/css/styles.css"/>
+
+  <style>
+
+    body.landing {
+      margin: 0;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background:
+        radial-gradient(circle at top left, rgba(255,0,221,0.12), transparent 35%),
+        radial-gradient(circle at bottom right, rgba(0,255,255,0.12), transparent 35%),
+        linear-gradient(135deg, #f7eefc, #efe3ff, #f6f0ff);
+
+      font-family: 'Inter', sans-serif;
+      color: #111;
+    }
+
+    .landing-container {
+      width: 100%;
+      min-height: 100vh;
+      padding: 2rem 5%;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    /* NAVBAR */
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #7a2cff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #444;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: #7a2cff;
+    }
+
+    /* HERO */
+
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 3rem;
+      margin-top: 3rem;
+      flex-wrap: wrap;
+    }
+
+    .hero-left {
+      flex: 1;
+      min-width: 320px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      background: rgba(255,255,255,0.5);
+      border: 1px solid rgba(255,255,255,0.6);
+      backdrop-filter: blur(10px);
+      border-radius: 999px;
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+      color: #7a2cff;
+      font-weight: 600;
+    }
+
+    .hero-title {
+      font-size: 4rem;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+      font-weight: 800;
+    }
+
+    .gradient-text {
+      background: linear-gradient(90deg, #7a2cff, #ff00b8, #00cfff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-desc {
+      font-size: 1.1rem;
+      color: #555;
+      max-width: 600px;
+      line-height: 1.8;
+      margin-bottom: 2rem;
+    }
+
+    /* BUTTONS */
+
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 0.9rem 1.6rem;
+      border-radius: 14px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: 0.3s;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #7a2cff, #ff00c8);
+      color: white;
+      box-shadow: 0 10px 30px rgba(122,44,255,0.25);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.5);
+      color: #333;
+      border: 1px solid rgba(255,255,255,0.6);
+      backdrop-filter: blur(10px);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.8);
+    }
+
+    /* RIGHT SIDE */
+
+    .hero-right {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-width: 300px;
+    }
+
+    .glass-card {
+      width: 350px;
+      height: 350px;
+      border-radius: 40px;
+      background: rgba(255,255,255,0.25);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.4);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .orb {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 30% 30%, #ff7df8, #7a2cff);
+      animation: float 4s ease-in-out infinite;
+      box-shadow:
+        0 0 60px rgba(122,44,255,0.5),
+        0 0 120px rgba(255,0,200,0.25);
+    }
+
+    @keyframes float {
+      0%,100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-18px);
+      }
+    }
+
+    /* FEATURES */
+
+    .features {
+      margin-top: 6rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+      gap: 2rem;
+    }
+
+    .feature-card {
+      background: rgba(255,255,255,0.35);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255,255,255,0.5);
+      border-radius: 24px;
+      padding: 2rem;
+      transition: 0.3s;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-8px);
+    }
+
+    .feature-card h3 {
+      margin-bottom: 1rem;
+      color: #7a2cff;
+    }
+
+    .feature-card p {
+      color: #555;
+      line-height: 1.7;
+    }
+
+    /* FOOTER */
+
+    .footer {
+      margin-top: 5rem;
+      text-align: center;
+      color: #666;
+      padding-bottom: 2rem;
+    }
+
+    /* MOBILE */
+
+    @media(max-width:900px){
+
+      .hero {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .hero-title {
+        font-size: 3rem;
+      }
+
+      .hero-buttons {
+        justify-content: center;
+      }
+    }
+
+  </style>
 </head>
+
 <body class="landing">
-  <main class="container">
-    <section class="hero glass">
+
+  <main class="landing-container">
+
+    <!-- NAVBAR -->
+
+    <nav class="navbar">
+
+      <div class="logo">
+        🌌 Aurora AI
+      </div>
+
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="/chat">Chat</a>
+      </div>
+
+    </nav>
+
+    <!-- HERO -->
+
+    <section class="hero">
+
       <div class="hero-left">
-        <h1 class="title">Aurora AI Chat</h1>
-        <p class="tagline">A modern, responsive AI chatbot — fast, friendly, and private (no DB).</p>
-        <ul class="features">
-          <li>Chat like ChatGPT</li>
-          <li>Dark mode & responsive</li>
-          <li>Typing animation & smooth UI</li>
-        </ul>
-        <div class="cta-row">
-          <a class="btn btn-primary" id="startBtn">Start Chatting</a>
-          <a class="btn btn-ghost" href="#features">Learn more</a>
+
+        <div class="badge">
+          ✦ Intelligent AI Workspace
         </div>
+
+        <h1 class="hero-title">
+          Meet
+          <span class="gradient-text">
+            Aurora AI
+          </span>
+        </h1>
+
+        <p class="hero-desc">
+          Your futuristic AI workspace designed with elegance,
+          speed, and creativity. Chat, generate ideas,
+          explain code, summarize content, and build smarter
+          workflows with Aurora.
+        </p>
+
+        <div class="hero-buttons">
+
+          <a href="/chat" class="btn btn-primary">
+            Start Chatting →
+          </a>
+
+          <a href="#features" class="btn btn-secondary">
+            Explore Features
+          </a>
+
+        </div>
+
       </div>
+
       <div class="hero-right">
-        <div class="ai-illustration">
-          <!-- Simple decorative SVG -->
-          <svg width="320" height="240" viewBox="0 0 320 240" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="g1" x1="0" x2="1">
-                <stop offset="0" stop-color="#7b61ff"/>
-                <stop offset="1" stop-color="#00d4ff"/>
-              </linearGradient>
-            </defs>
-            <rect x="10" y="10" width="300" height="220" rx="20" fill="url(#g1)" opacity="0.12"/>
-            <g transform="translate(40,40)">
-              <circle cx="80" cy="40" r="28" fill="#7b61ff" opacity="0.9"/>
-              <rect x="120" y="20" width="80" height="40" rx="8" fill="#00d4ff" opacity="0.9"/>
-              <path d="M10 120 Q80 60 150 120" stroke="#7b61ff" stroke-width="6" fill="none" stroke-linecap="round"/>
-            </g>
-          </svg>
+
+        <div class="glass-card">
+          <div class="orb"></div>
         </div>
+
       </div>
+
     </section>
 
-    <section id="features" class="features-section">
-      <h2>Features</h2>
-      <div class="feature-grid">
-        <div class="feature glass">
-          <h3>Modern UI</h3>
-          <p>Glassmorphism, gradients, and smooth animations for a premium feel.</p>
-        </div>
-        <div class="feature glass">
-          <h3>Fast Backend</h3>
-          <p>FastAPI backend that forwards messages to OpenAI. No DB required.</p>
-        </div>
-        <div class="feature glass">
-          <h3>Privacy Friendly</h3>
-          <p>All chat history stays in your browser unless you copy or export it.</p>
-        </div>
+    <!-- FEATURES -->
+
+    <section class="features" id="features">
+
+      <div class="feature-card">
+        <h3>⚡ Fast AI Chat</h3>
+        <p>
+          Instant responses with a sleek conversational interface
+          inspired by premium AI platforms.
+        </p>
       </div>
+
+      <div class="feature-card">
+        <h3>🎨 Beautiful UI</h3>
+        <p>
+          Soft gradients, glassmorphism, floating animations,
+          and responsive layouts crafted for modern experiences.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <h3>🔒 Privacy Focused</h3>
+        <p>
+          Your chats remain lightweight and secure without
+          unnecessary database complexity.
+        </p>
+      </div>
+
     </section>
+
+    <!-- FOOTER -->
 
     <footer class="footer">
-      <p>Built with ❤️ using FastAPI and OpenAI</p>
+      Built with ❤️ using FastAPI + Gemini AI
     </footer>
+
   </main>
 
-  <script>
-    // Start button navigates to chat page
-    document.getElementById('startBtn').addEventListener('click', function () {
-      window.location.href = '/chat';
-    });
-  </script>
 </body>
 </html>
